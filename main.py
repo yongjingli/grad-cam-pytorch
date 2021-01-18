@@ -53,6 +53,32 @@ def load_images(image_paths):
     return images, raw_images
 
 
+def preprocess_local(image_path):
+    cv_img = cv2.imread(image_path)
+    long_size = max(cv_img.shape[:2])
+    pad_h = (long_size - cv_img.shape[0]) // 2
+    pad_w = (long_size - cv_img.shape[1]) // 2
+    img_input = np.ones((long_size, long_size, 3), dtype=np.uint8) * 0
+    img_input[pad_h:cv_img.shape[0] + pad_h, pad_w:cv_img.shape[1] + pad_w, :] = cv_img
+    img_input = cv2.resize(img_input, (224, 224), cv2.INTER_LINEAR)
+
+    mean = np.array([123.675, 116.28, 103.53])
+    std = np.array([58.395, 57.12, 57.375])
+
+    img_t = img_input.copy().astype(np.float32)
+    mean = np.float64(mean.reshape(1, -1))
+    std_inv = 1 / np.float64(std.reshape(1, -1))
+
+    cv2.cvtColor(img_t, cv2.COLOR_BGR2RGB, img_t)  # inplace
+    cv2.subtract(img_t, mean, img_t)  # inplace
+    cv2.multiply(img_t, std_inv, img_t)  # inplace
+    img_t = TF.to_tensor(img_t.copy())  # no resize
+    # img_t = img_t.unsqueeze(0)
+
+    return img_t, img_input
+
+
+
 def get_classtable():
     classes = []
     with open("samples/synset_words.txt") as lines:
