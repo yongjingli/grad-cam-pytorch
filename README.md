@@ -1,3 +1,8 @@
+## Updata by YongjingLi
+1. add preprocess_local in main.py for long size resize
+
+
+
 # Grad-CAM with PyTorch
 
 PyTorch implementation of Grad-CAM (Gradient-weighted Class Activation Mapping) [[1](##references)] in image classification. This repository also contains implementations of vanilla backpropagation, guided backpropagation [[2](##references)], deconvnet [[2](##references)], and guided Grad-CAM [[1](##references)], occlusion sensitivity maps [[3](##references)].
