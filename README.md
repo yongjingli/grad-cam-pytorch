@@ -1,5 +1,6 @@
 ## Updata by YongjingLi
 1. add preprocess_local in main.py for long size resize
+2. add get model info to layer name of model
 
 
 
